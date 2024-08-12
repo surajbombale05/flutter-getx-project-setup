@@ -17,7 +17,6 @@ class SizedboxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height:height,
-      // width: AppSizes.getPhoneSize(30),
       width:width,
       child: child,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,10 +29,8 @@ late ApiEndpoints apiEndpoints;
 final appRoutes = Routes();
 
 class MyApp extends StatefulWidget {
-  const MyApp({
-    required this.config,
-    required this.sharedPreferences,
-    super.key});
+  const MyApp(
+      {required this.config, required this.sharedPreferences, super.key});
   final ApiBaseUrlModel config;
   final SharedPreferences sharedPreferences;
 
@@ -48,12 +47,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'ticket',
-      routeInformationParser: appRoutes.router.routeInformationParser,
-      routeInformationProvider: appRoutes.router.routeInformationProvider,
-      routerDelegate: appRoutes.router.routerDelegate,
-    );
+    return ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        builder: (context, child) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'ticket',
+            routeInformationParser: appRoutes.router.routeInformationParser,
+            routeInformationProvider: appRoutes.router.routeInformationProvider,
+            routerDelegate: appRoutes.router.routerDelegate,
+          );
+        });
   }
 }
