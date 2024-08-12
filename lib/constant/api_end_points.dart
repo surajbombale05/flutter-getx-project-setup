@@ -14,18 +14,5 @@ class ApiEndpoints {
   late String authBaseUrl = apiBaseUrlModel?.authBaseUrl ?? "";
   late String gateWayBaseUrl = apiBaseUrlModel?.gatewayUrl ?? "";
 
-  late String getAllCategory = "${baseUrl}category/all/category";
-  late String getProductByGroupId = "${baseUrl}products/all/group";
-  late String storeListGet =
-      "${baseUrl}/bussiness/all/getByGroupId/1703228300417";
-  late String getAllProducts = "products/all/products"; 
-  late String sendOtp="${gateWayBaseUrl}authgw/sendotp";
-  late String verifyOtp="${authBaseUrl}auth/validateOtp";
-  late String refreshToken="${gateWayBaseUrl}authgw/refresh-token";
-        
-
-
-  late String addCategories = "${baseUrl}category/";
-  late String getCategories = "${baseUrl}category/all/getByGroupId/";
-
+  late String getAllCategory = "${baseUrl}org/";
 }

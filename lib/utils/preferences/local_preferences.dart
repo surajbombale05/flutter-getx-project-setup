@@ -18,13 +18,6 @@ class LocalStorageUtils {
     return token;
   }
 
-  // static JwtTokeResponseModel userData() {
-  //   final token = instance.getString('token') ?? '';
-  //   var userData = JwtDecoder.decode(token);
-  //   var userDecoded = JwtTokeResponseModel.fromJson(userData);
-  //   return userDecoded;
-  // }
-
   static Future<void> clear() async {
     await instance.clear();
   }

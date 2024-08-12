@@ -3,15 +3,15 @@ import 'package:ticket/app_features/home_screen/home_screen.dart';
 
 
 class Routes {
-  static const String splashScreen = '/splashscreen';
+  static const String homeScreen = '/home-screen';
 
   GoRouter get router => _goRouter;
 
   late final GoRouter _goRouter = GoRouter(
-      initialLocation:splashScreen,
+      initialLocation:homeScreen,
       routes: [
         GoRoute(
-          path: splashScreen,
+          path: homeScreen,
           builder: (context, state) => const HomeScreen(),
         ),
       ]);

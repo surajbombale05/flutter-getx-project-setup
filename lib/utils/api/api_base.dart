@@ -1,6 +1,12 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:mime/mime.dart';
+import 'package:ticket/utils/preferences/local_preferences.dart';
 
 typedef ApiResponseSuccess = Function(dynamic data);
 typedef ApiResponseFailure = Function(String error);
@@ -8,13 +14,13 @@ typedef ApiResponseFailure = Function(String error);
 const String jsonContentType = 'application/json';
 
 class ApiBase {
+  final Dio _client = Dio();
   final Map<String, String> _headers;
-  String? token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3MDM4NDc1MzM0NjEsIm5hbWUiOiJWYWliaGF2IE5laGUiLCJ0ZW5hbnRJZCI6MTcwMzIyODMwMDQxNywicGhvbmVOdW1iZXIiOiI3MzUwMTAzMzQwIiwicm9sZSI6eyJyb2xlSWQiOjE3MDE0MjgzNjA3NTQsIm5hbWUiOiJhZG1pbiIsImNvZGUiOiJDRDIiLCJwZXJtaXNzaW9ucyI6WyJnZXQtYWxsIiwiTFNSIiwiT1NSIiwiQ1NSMiJdfSwiaWF0IjoxNzA0ODkxNjAzLCJleHAiOjE3MzU5OTU2MDN9.d2QEsh1gV5w4wJvkwsMGL92ycL-0RZOgAz-On8HBK0M';
+  String? token = '';
 
-  // Future _getToken() async {
-  //   token = await '';
-  // }
+  getGroupId() async {
+    token = await LocalStorageUtils.fetchToken();
+  }
 
   ApiBase({Map<String, String>? headers})
       : _headers = headers ?? {'Content-Type': jsonContentType};
@@ -24,9 +30,13 @@ class ApiBase {
     ApiResponseSuccess onSuccess,
     ApiResponseFailure onFailure, {
     bool? isTokenMandatory,
+    bool? isBearerTokenMandatory,
   }) async {
+    await getGroupId();
     if (isTokenMandatory ?? false) {
       _headers['Authorization'] = token ?? '';
+    } else if (isBearerTokenMandatory ?? false) {
+      _headers['Authorization'] = 'Bearer $token';
     }
     _request(
         (uri) => http.get(uri, headers: _headers), url, onSuccess, onFailure);
@@ -39,6 +49,8 @@ class ApiBase {
     ApiResponseFailure onFailure, {
     bool? isTokenMandatory,
   }) async {
+    await getGroupId();
+
     if (isTokenMandatory ?? false) {
       _headers['Authorization'] = token ?? '';
     }
@@ -55,6 +67,8 @@ class ApiBase {
     ApiResponseFailure onFailure, {
     bool? isTokenMandatory,
   }) async {
+    await getGroupId();
+
     if (isTokenMandatory ?? false) {
       _headers['Authorization'] = token ?? '';
     }
@@ -69,11 +83,38 @@ class ApiBase {
     ApiResponseFailure onFailure, {
     bool? isTokenMandatory,
   }) async {
+    await getGroupId();
+
     if (isTokenMandatory ?? false) {
       _headers['Authorization'] = token ?? '';
     }
     _request((uri) => http.delete(uri, headers: _headers), url, onSuccess,
         onFailure);
+  }
+
+  Future dioPutFile(
+      {required String? url,
+      XFile? uploadFile,
+      required int fileLength,
+      dynamic data,
+      String? contentType}) async {
+    Options options = Options(
+        contentType: contentType ?? lookupMimeType(uploadFile?.path ?? ""),
+        headers: {
+          'Accept': "*/*",
+          'Content-Length': fileLength,
+          'Connection': 'keep-alive',
+        });
+
+    final response = await _client.put(url ?? "",
+        data: data ?? uploadFile?.openRead(),
+        options: options, onSendProgress: (val1, val2) {
+      log("${val1 / val2 * 100}");
+    });
+    log("Res ${response.statusCode}");
+    if (response.statusCode == 200) {
+      log("file upload successfully");
+    }
   }
 
   Future<void> _request(Function requestMethod, String url,
