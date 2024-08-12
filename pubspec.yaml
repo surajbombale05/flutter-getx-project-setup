@@ -51,6 +51,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   shared_preferences: ^2.2.3
   json_annotation: ^4.9.0
+  responsive_framework: ^1.4.0
+  responsive_builder: ^0.7.1
 
 dev_dependencies:
   flutter_test:

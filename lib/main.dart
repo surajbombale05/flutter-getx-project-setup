@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticket/constant/api_end_points.dart';
 import 'package:ticket/common/model/api_base_url.dart';
@@ -14,6 +16,7 @@ void main({String? env}) async {
   final appConfig = await AppConfig().forEnvironment(env);
   initialBiniding();
   await LocalStorageUtils.init();
+  usePathUrlStrategy();
 
   runApp(MyApp(
     config: appConfig,
@@ -48,7 +51,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'ticket',
-      // theme: ThemeData(fontFamily: 'baloo'),
       routeInformationParser: appRoutes.router.routeInformationParser,
       routeInformationProvider: appRoutes.router.routeInformationProvider,
       routerDelegate: appRoutes.router.routerDelegate,

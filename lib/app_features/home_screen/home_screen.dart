@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ticket/common/widgets/sizedbox_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,7 +8,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Center(child: Text("HOME-PAGE"),)
+      body:Column(
+        children: [
+          SizedboxWidget(height: 20,),
+          Center(child: Text("HOME-PAGE"),),
+          SizedboxWidget(height: 20,),
+          Center(child: Text("HOME-PAGE"),),
+        ],
+      )
     );
   }
 }

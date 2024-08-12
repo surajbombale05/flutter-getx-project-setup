@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:ticket/constant/app_sizes.dart';
 
 class SizedboxWidget extends StatelessWidget {
   const SizedboxWidget({
@@ -15,8 +16,9 @@ class SizedboxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: width,
+      height:height,
+      // width: AppSizes.getPhoneSize(30),
+      width:width,
       child: child,
     );
   }
